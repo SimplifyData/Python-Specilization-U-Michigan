@@ -24,6 +24,7 @@ def count_words():
     span_tags = file('span')
 
     for tag in span_tags:
+        print tag
         sum = sum + int(tag.contents[0])
 
     return sum
