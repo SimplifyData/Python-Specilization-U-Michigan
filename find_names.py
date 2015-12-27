@@ -13,14 +13,15 @@ def find_names():
     sum = 0
     url = input("Website: ")
     try:
-        browser_counter = int(input("How many times to browser url?: "))
+        browser_counter = int(input("How many times to browse url?: "))
+        position = int(input("what position to look up name?: "))
 
-        if type(browser_counter) == int(browser_counter):
+        if type(browser_counter) == int(browser_counter) and type(position == int(position)):
             browser_counter = int(browser_counter)
 
     except:
 
-        print("Please write an integer for the browser loops")
+        print("Please write integers for the lookup for number of times and the position of the name")
 
         exit()
 
@@ -50,7 +51,7 @@ def find_names():
             #print (tag.get('href', None))
 
 
-            if name_counter == 3:
+            if name_counter == position:
                 name_list.append(tag.contents[0])
 
                 url = tag.get("href", None)
