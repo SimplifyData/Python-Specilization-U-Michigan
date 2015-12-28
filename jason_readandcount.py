@@ -4,6 +4,7 @@ import json
 def jason_count():
     """
     this function pulls a url and reads the json and parses data, numbers and adds them from a key:value pair.
+    json lib is used for json parsing, urllib is used to connect to the url.
     :return:
     """
 

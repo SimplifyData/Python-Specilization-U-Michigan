@@ -3,7 +3,7 @@ import urllib.request as urllib
 
 def find_content():
     """
-    this function finds the content tag
+    this function finds the element node "content" and its value, using xml and urllib
     :return:
     """
 

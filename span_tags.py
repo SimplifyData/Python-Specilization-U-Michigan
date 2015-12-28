@@ -9,6 +9,11 @@ b_soup =  BeautifulSoup
 
 
 def count_words():
+    """
+    This function parses the url html using beautiful soup.
+    It counts the text value of a specific tag
+    :return:
+    """
 
     sum = 0
     url = input("Website: ")

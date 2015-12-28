@@ -1,3 +1,7 @@
+
+"""
+This a script for using lower level sockets
+"""
 import socket
 
 HOST = 'www.pythonlearn.com'

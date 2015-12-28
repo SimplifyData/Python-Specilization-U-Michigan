@@ -9,6 +9,10 @@ b_soup =  BeautifulSoup
 
 
 def find_names():
+    """
+    this function connects to a url using urllib, and parses the html for a tag containing names using beautiful soup.
+    :return:
+    """
 
     sum = 0
     url = input("Website: ")
