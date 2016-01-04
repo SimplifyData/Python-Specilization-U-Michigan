@@ -9,47 +9,49 @@ def musical_track_load():
     """
 
     conn  = sqlite3.connect(
-        "D:\\Box Sync\\Python Projects\\Python-Specilization-U-Michigan\\SQL lite\\musical_track_db.sqlite")
+        "musical_track_db.sqlite")
 
     cur = conn.cursor()
 
-    cur.executescript('''
+    try:
 
-        DROP TABLE IF EXISTS Artist;
-        DROP TABLE IF EXISTS Album;
-        DROP TABLE IF EXISTS Track;
+        cur.executescript('''
 
-        CREATE TABLE Artist (
+            DROP TABLE IF EXISTS Artist;
+            DROP TABLE IF EXISTS Album;
+            DROP TABLE IF EXISTS Track;
 
+            CREATE TABLE Artist (
             id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-
             name    TEXT UNIQUE
-
             );
 
-        CREATE TABLE Album (
-
+            CREATE TABLE Genre (
             id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+            name    TEXT UNIQUE
+            );
 
+            CREATE TABLE Album (
+            id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
             artist_id  INTEGER,
-
             title   TEXT UNIQUE
-
             );
 
-        CREATE TABLE Track (
-
-            id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-
+            CREATE TABLE Track (
+            id  INTEGER NOT NULL PRIMARY KEY
+            AUTOINCREMENT UNIQUE,
             title TEXT  UNIQUE,
-
             album_id  INTEGER,
-
+            genre_id  INTEGER,
             len INTEGER, rating INTEGER, count INTEGER
+            );
 
-             );
+            ''')
 
-        ''')
+        print('table created')
+
+    except:
+        print("continue")
 
     try:
         xml_file = input("What is your music XML file path?: ")
@@ -101,49 +103,68 @@ def musical_track():
     for nodes in all_nodes:
         if (look_up(nodes,'Track ID') is None): continue
 
-        song_title = lookup(nodes, 'Name')
+        song_title = look_up(nodes, 'Name')
 
-        artist = lookup(nodes, 'Artist')
+        artist = look_up(nodes, 'Artist')
 
-        album = lookup(nodes, 'Album')
+        album = look_up(nodes, 'Album')
 
-        count = lookup(nodes, 'Play Count')
+        count = look_up(nodes, 'Play Count')
 
-        rating = lookup(nodes, 'Rating')
+        rating = look_up(nodes, 'Rating')
 
-        length = lookup(nodes, 'Total Time')
+        length = look_up(nodes, 'Total Time')
 
-        if title is None or artist is None or album is None:
+        genre = look_up(nodes, 'Genre')
+
+        if song_title is None or artist is None or album is None:
             continue
 
-        print(title,artist,album,count,rating,length)
+        #print(song_title,artist,album,count,rating,length)
 
-    conn = sqlite3.connect(
-        "D:\\Box Sync\\Python Projects\\Python-Specilization-U-Michigan\\SQL lite\\musical_track_db.sqlite")
+        conn = sqlite3.connect(
+            "musical_track_db.sqlite")
 
-    cur = conn.cursor()
+        cur = conn.cursor()
 
-    cur.execute(''' INSERT OR IGNORE INTO Artist (name) VALUES (?) ''', (artist,))
+        #print(artist)
 
-    cur.execute(''' SELECT id FROM Artist WHERE Artist.name = ?''', (artist,))
+        cur.execute(''' INSERT OR IGNORE INTO Artist (name) VALUES (?) ''', (artist,))
 
-    artist_id = cur.fetchone()[0]
+        cur.execute(' SELECT id FROM Artist WHERE name = ?', (artist,))
 
-    cur.execute(''' INSERT OR IGNORE INTO Album (artist_id, title) VALUES (?,?)''',(artist_id,album))
+        #conn.commit()
 
-    cur.execute(''' SELECT id FROM Album WHERE title = ?''',(album))
+        artist_id = cur.fetchone()[0]
 
-    album_id = cur.fetchone()[0]
+        #print(artist_id)
 
-    cur.execute(''' INSERT OR IGNORE INTO Track(title, album_id , len, rating, count) VALUES
+        cur.execute(''' INSERT OR IGNORE INTO Album (artist_id, title) VALUES (?,?)''',(artist_id,album))
 
-                (?,?,?,?,?)''',(song_title, album_id, length, rating, count))
+        cur.execute(' SELECT id FROM Album WHERE title = ?',(album,))
 
-    conn.commit()
+        album_id = cur.fetchone()[0]
+
+        cur.execute(''' INSERT OR IGNORE INTO Genre (name) VALUES (?)''',(genre))
+
+        print(genre)
+
+        cur.execute(''' SELECT id FROM Genre WHERE name =?''',(genre))
+
+        genre_id = cur.fetchone()[0]
+
+        cur.execute(''' INSERT OR IGNORE INTO Track(title, album_id ,genre_id, len, rating, count) VALUES
+
+                    (?,?,?,?,?,?)''',(song_title, album_id, genre_id,length, rating, count))
+
+        conn.commit()
+
+    conn.close()
+
+musical_track = musical_track()
 
 
-
-
+D:\\Box Sync\\Python Projects\\Python-Specilization-U-Michigan\\data\\tracks\tracks\\Library.xml
 
 
 
