@@ -20,6 +20,7 @@ def musical_track_load():
             DROP TABLE IF EXISTS Artist;
             DROP TABLE IF EXISTS Album;
             DROP TABLE IF EXISTS Track;
+            DROP TABLE IF EXISTS Genre;
 
             CREATE TABLE Artist (
             id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
@@ -94,6 +95,7 @@ def musical_track():
     :return:
     """
 
+
     file = musical_track_load()
 
     all_nodes = file.findall('/dict/dict/dict')
@@ -145,11 +147,11 @@ def musical_track():
 
         album_id = cur.fetchone()[0]
 
-        cur.execute(''' INSERT OR IGNORE INTO Genre (name) VALUES (?)''',(genre))
+        cur.execute(''' INSERT OR IGNORE INTO Genre (name) VALUES (?)''',(genre,))
 
-        print(genre)
+        #print(genre)
 
-        cur.execute(''' SELECT id FROM Genre WHERE name =?''',(genre))
+        cur.execute(''' SELECT id FROM Genre WHERE name =?''',(genre,))
 
         genre_id = cur.fetchone()[0]
 
